@@ -1,6 +1,7 @@
 <?php
 
 require "connection.inc.php";
+session_start();
 
 $name = $_POST["nombreUsuario"];
 $email = $_POST["email"];
@@ -12,21 +13,26 @@ $getUser = "SELECT * FROM usuarios WHERE Name = '$name'";
 $verQuery = mysqli_query($conn, $getUser);
 if (mysqli_num_rows($verQuery) > 0) {
 	
-	echo "
-			<script type='text/javascript'>
-				alert('Usuario ya existente');
-				window.location.href = '../signIn.php';
-			</script>
-		";
+	$_SESSION['alertMessage'] = 'Usuario ya existente';
+
+	// Data array
+	$data = array(
+					'name' => $name,
+					'email' => $email
+					);
+
+	$_SESSION['data'] = $data;
+
+	header("Location: ../signIn.php");
 
 }else if ($password != $password2) {
 	
-	echo "
-			<script type='text/javascript'>
-				alert('Las contraseñas no coinciden');
-				window.location.href = '../signIn.php';
-			</script>
-		";
+	// Alert message to display
+	$_SESSION['alertMessage'] = 'Las contraseñas no coinciden';
+
+	
+
+	header("Location: ../signIn.php");
 
 }else{
 	$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -36,6 +42,7 @@ if (mysqli_num_rows($verQuery) > 0) {
 	$query = mysqli_query($conn, $setUser);
 
 	if ($query) {
+		$_SESSION['userName'] = $name;
 		echo "
 				<script type='text/javascript'>
 					alert('Usuario creado exitosamente');

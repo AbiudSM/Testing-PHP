@@ -1,3 +1,17 @@
+<?php
+	session_start();
+
+	if (isset($_SESSION['data'])) {
+		$name = $_SESSION['data']['name'];
+		$email = $_SESSION['data']['email'];
+
+		unset($_SESSION['data']);
+	}else{
+		$name = "Nombre de usuario";
+		$email = "Correo";
+	}
+?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -26,8 +40,18 @@
 							Registrate
 						</span>
 
+						<?php if (isset($_SESSION['alertMessage'])) { ?>
+									<div class="alert alert-danger alert-dismissible fade show" role="alert">
+										<?= $_SESSION['alertMessage'] ?>
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+						<?php unset($_SESSION['alertMessage']); }  ?>
+						
+
 						<div class="wrap-input100 validate-input" data-validate = "Ingrese su nombre de usuario">
-							<input class="input100" type="text" name="nombreUsuario" placeholder="Nombre de usuario">
+							<input class="input100" type="text" name="nombreUsuario" placeholder="<?php echo $name; ?>">
 							<span class="focus-input100"></span>
 							<span class="symbol-input100">
 								<i class="fa fa-user" aria-hidden="true"></i>
@@ -35,7 +59,7 @@
 						</div>
 
 						<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-							<input class="input100" type="text" name="email" placeholder="Correo">
+							<input class="input100" type="text" name="email" placeholder="<?php echo $email; ?>">
 							<span class="focus-input100"></span>
 							<span class="symbol-input100">
 								<i class="fa fa-envelope" aria-hidden="true"></i>
