@@ -8,9 +8,9 @@
 		$userName = "Iniciar Sesión";
 	}else{
 		$userName = $_SESSION['userName'];
-		$getEmail = "SELECT * FROM usuarios WHERE Name = '$userName'";
-		$query = mysqli_query($conn, $getEmail);
-		$array = mysqli_fetch_array($query);
+        $query = "SELECT * FROM usuarios WHERE Name = '$userName'";
+        $resultQuery = mysqli_query($conn,$query);
+        $userInfo = mysqli_fetch_array($resultQuery);
 	}
 ?>
 
@@ -114,12 +114,34 @@
 	<!-- INFO  -->
 	<br><br>
 	<?php
-		if (isset($_SESSION['userName'])) {
-			echo "Bienvenido: ".$userName."<br>";
-			$email = $array['Email'];
-			echo "Correo: ".$email;
-		}
-	?>
+        // if user is logged
+		if (isset($_SESSION['userName'])) { ?>
+
+            <div class="col-md-8">
+                <table class="table table-bordered">
+                    
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Contraseña</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td><?php echo $userInfo['Name'] ?></td>
+                            <td><?php echo $userInfo['Email'] ?></td>
+                            <td><i>Encrypted</i></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+			
+    <?php } ?>
 
 
 	<!-- SCRIPTS BOOTSTRAP -->
