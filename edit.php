@@ -1,18 +1,36 @@
 <?php 
-	require "php/connection.inc.php";
-	session_start();
 
-	if (!isset($_SESSION['userName'])) {
-		//header("Location: index.php");
-		//die();
-		$userName = "Iniciar Sesión";
-	}else{
-		$userName = $_SESSION['userName'];
-        $query = "SELECT * FROM usuarios WHERE Name = '$userName'";
-        $resultQuery = mysqli_query($conn,$query);
-        $userInfo = mysqli_fetch_array($resultQuery);
-	}
+require 'php/connection.inc.php';
+session_start();
+
+if (isset($_GET['id'])) {
+
+	$idUsuario = $_GET['id'];
+	$query = "SELECT * FROM usuarios WHERE idUsuario = '$idUsuario'";
+
+}else if (isset($_SESSION['userName'])) {
+
+	$userName = $_SESSION['userName'];
+    $query = "SELECT * FROM usuarios WHERE Name = '$userName'";
+
+}else{
+
+	header("Location: Home.php");
+
+}
+
+$resultQuery = mysqli_query($conn, $query);
+if (mysqli_num_rows($resultQuery) == 1) {
+	$userInfo = mysqli_fetch_array($resultQuery);
+
+	$userName = $userInfo['Name'];
+	$email = $userInfo['Email'];
+	$password = $userInfo['Password'];
+
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -111,43 +129,44 @@
         </div>
     </nav>
 
-	<!-- INFO  -->
+	<!-- EDIT INFORMATION  -->
 	<br><br>
-	<?php
-        // if user is logged
-		if (isset($_SESSION['userName'])) { ?>
+	
+	<div class="container p-4">
+		<div class="row">
+			<div class="col-md-4 mx-auto">
 
-            <div class="col-md-8">
-                <table class="table table-bordered">
-                    
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Contraseña</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
+				<!-- ALERT DIALOG -->
+				<?php if (isset($_SESSION['alertMessage'])) { ?>
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<?= $_SESSION['alertMessage'] ?>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				<?php unset($_SESSION['alertMessage']); }  ?>
 
-                    <tbody>
+				<div class="card card-body">
+					<form action="php/editUserInfo.php" method="POST">
+						
+						<div class="form-group">
+							<input type="text" name="userName" value="<?php echo $userName ?>" class="form-control" placeholder="Update title">
+						</div>
 
-                        <tr>
-                            <td><?php echo $userInfo['Name'] ?></td>
-                            <td><?php echo $userInfo['Email'] ?></td>
-                            <td><i>Encrypted</i></td>
-                            <td>
-                                <a href="edit.php?id=<?php echo $userInfo['idUsuario'] ?>">
-                                    Editar
-                                </a>
-                            </td>
-                        </tr>
+						<div class="form-group">
+							<input type="text" name="email" value="<?php echo $email ?>" class="form-control" placeholder="Update title">
+						</div>
 
-                    </tbody>
+						<div class="form-group">
+							<a href="#">Cambiar contraseña</a>
+						</div>
 
-                </table>
-            </div>
-			
-    <?php } ?>
+						<button class="btn btn-success" name="update">Update</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 	<!-- SCRIPTS BOOTSTRAP -->
