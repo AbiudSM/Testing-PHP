@@ -188,7 +188,7 @@
                                     <td><?php echo $row['Email'] ?></td>
                                     <td><i>Encrypted</i></td>
                                     <td>
-                                        <a href="edit.php?id=<?php echo $row['idUsuario'] ?>">
+                                        <a href="php/eliminar.php?id=<?php echo $row['idUsuario'] ?>" onclick="return  confirm('Deseas eliminar el usuario?')">
                                             Eliminar
                                         </a>
                                     </td>
