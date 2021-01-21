@@ -114,10 +114,14 @@
 	<!-- INFO  -->
 	<br><br>
 	<?php
+    
         // if user is logged
 		if (isset($_SESSION['userName'])) { ?>
 
             <div class="col-md-8">
+
+                <h2>Mi información</h2>
+
                 <table class="table table-bordered">
                     
                     <thead>
@@ -147,6 +151,69 @@
                 </table>
             </div>
 			
+    <?php } ?>
+
+
+    <!-- USERS -->
+    <!-- INFO  -->
+    <br><br>
+    <?php
+        // if user is logged
+        if (isset($_SESSION['userName'])) { ?>
+
+            <div class="col-md-8">
+                
+                <h2>USUARIOS</h2>
+
+                <!-- ALERT MESSAGE -->
+                <?php if (isset($_SESSION['message'])) { ?>
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <?= $_SESSION['message'] ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                <?php unset($_SESSION['message']); }  ?>
+
+                <table class="table table-bordered">
+                    
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Contraseña</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <?php 
+                            $query = "SELECT * FROM usuarios";
+                            $resultQuery = mysqli_query($conn,$query);
+
+                            while ($row = mysqli_fetch_array($resultQuery)) {  ?>
+                                <tr>
+                                    <td><?php echo $row['Name'] ?></td>
+                                    <td><?php echo $row['Email'] ?></td>
+                                    <td><i>Encrypted</i></td>
+                                    <td>
+                                        <a href="php/eliminar.php?id=<?php echo $row['idUsuario'] ?>" onclick="return  confirm('Deseas eliminar el usuario?')">
+                                            Eliminar
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            
+                        <?php }  ?>
+
+                    </tbody>
+
+                </table>
+            </div>
+            
     <?php } ?>
 
 
