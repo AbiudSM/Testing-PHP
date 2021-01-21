@@ -119,6 +119,52 @@
 		if (isset($_SESSION['userName'])) { ?>
 
             <div class="col-md-8">
+
+                <h2>Mi información</h2>
+
+                <table class="table table-bordered">
+                    
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Contraseña</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td><?php echo $userInfo['Name'] ?></td>
+                            <td><?php echo $userInfo['Email'] ?></td>
+                            <td><i>Encrypted</i></td>
+                            <td>
+                                <a href="edit.php?id=<?php echo $userInfo['idUsuario'] ?>">
+                                    Editar
+                                </a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+			
+    <?php } ?>
+
+
+    <!-- USERS -->
+    <!-- INFO  -->
+    <br><br>
+    <?php
+        // if user is logged
+        if (isset($_SESSION['userName'])) { ?>
+
+            <div class="col-md-8">
+                
+                <h2>USUARIOS</h2>
+
                 <table class="table table-bordered">
                     
                     <thead>
@@ -150,47 +196,6 @@
 
                             
                         <?php }  ?>
-
-                    </tbody>
-
-                </table>
-            </div>
-			
-    <?php } ?>
-
-
-    <!-- USERS -->
-    <!-- INFO  -->
-    <br><br>
-    <h2>USUARIOS</h2>
-    <?php
-        // if user is logged
-        if (isset($_SESSION['userName'])) { ?>
-
-            <div class="col-md-8">
-                <table class="table table-bordered">
-                    
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Contraseña</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-                            <td><?php echo $userInfo['Name'] ?></td>
-                            <td><?php echo $userInfo['Email'] ?></td>
-                            <td><i>Encrypted</i></td>
-                            <td>
-                                <a href="edit.php?id=<?php echo $userInfo['idUsuario'] ?>">
-                                    Editar
-                                </a>
-                            </td>
-                        </tr>
 
                     </tbody>
 
